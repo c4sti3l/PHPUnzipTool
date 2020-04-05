@@ -1,4 +1,5 @@
 <?php
+define('_PATH', dirname(__FILE__));
 $GLOBALS["m"] = "";
 $GLOBALS["e"] = "";
 $files = readZips();
@@ -28,7 +29,7 @@ function doAction($d)
     $res = $zip->open($d["unzipfile"]);
     if ($res === TRUE)
     {
-        $zip->extractTo($d["dir"]);
+        $zip->extractTo(_PATH . $d["dir"]);
         $zip->close();
         $GLOBALS["m"] = 'Erfolgreich entpackt!';
     }
@@ -41,13 +42,13 @@ function doAction($d)
     if (isset($d["delZip"]) && $d["delZip"] == "on")
     {
         unlink($d["unzipfile"]);
-        $GLOBALS["m"] .= '<br>ZIP-Datei erfolgreich gelöscht!';
+        $GLOBALS["m"] .= '<br>ZIP-Datei erfolgreich gel&ouml;scht!';
     }
 
     if (isset($d["delPhp"]) && $d["delPhp"] == "on")
     {
         unlink("unzip.php");
-        $GLOBALS["m"] .= '<br><b>unzip.php</b> erfolgreich gelöscht!';
+        $GLOBALS["m"] .= '<br><b>unzip.php</b> erfolgreich gel&ouml;scht!';
     }
 
 }
@@ -273,7 +274,7 @@ function d($s)
                 ?>
 
                 <div class="col-sm-6">
-                    <h1>ZIP auswählen</h1>
+                    <h1>ZIP ausw&auml;hlen</h1>
                     <br>
 
                     <?php
@@ -297,11 +298,11 @@ function d($s)
                     <br>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked id="delZip" name="delZip">
-                        <label class="form-check-label" for="delZip">ZIP Datei nach entpacken löschen? </label>
+                        <label class="form-check-label" for="delZip">ZIP Datei nach entpacken l&ouml;schen? </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked id="delPhp" name="delPhp">
-                        <label class="form-check-label" for="delPhp">Unziper nach entpacken löschen? </label>
+                        <label class="form-check-label" for="delPhp">Unziper nach entpacken l&ouml;schen? </label>
                     </div>
                     <br>
                     <div class="form-group">
