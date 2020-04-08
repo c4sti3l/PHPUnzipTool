@@ -4,65 +4,55 @@ $GLOBALS["m"] = "";
 $GLOBALS["e"] = "";
 $files = readZips();
 
-if (isset($_POST["unzipfile"]))
-{
+if (isset($_POST["unzipfile"])) {
     doAction($_POST);
 }
 
-function doAction($d)
-{
-    if (!is_file($d["unzipfile"]))
-    {
+function doAction($d) {
+    if (!is_file($d["unzipfile"])) {
         $GLOBALS["e"] = "Datei (<b>" . $d["unzipfile"] . "</b>) nicht gefunden";
         return;
     }
 
-    if ($d["dir"] != "")
-    {
-        if (!file_exists($d["dir"]))
-        {
+    if ($d["dir"] != "") {
+        if (!file_exists($d["dir"])) {
             mkdir($d["dir"], 0777, true);
         }
     }
 
     $zip = new ZipArchive;
     $res = $zip->open($d["unzipfile"]);
-    if ($res === TRUE)
-    {
+    if ($res === TRUE) {
+        if (substr($d["dir"], 0, 1) != "/") {
+            $d["dir"] = "/" . $d["dir"];
+        }
         $zip->extractTo(_PATH . $d["dir"]);
         $zip->close();
         $GLOBALS["m"] = 'Erfolgreich entpackt!';
-    }
-    else
-    {
+    } else {
         $GLOBALS["e"] = 'ZIP konnte nicht geöffnet werden!';
         return;
     }
 
-    if (isset($d["delZip"]) && $d["delZip"] == "on")
-    {
+    if (isset($d["delZip"]) && $d["delZip"] == "on") {
         unlink($d["unzipfile"]);
         $GLOBALS["m"] .= '<br>ZIP-Datei erfolgreich gel&ouml;scht!';
     }
 
-    if (isset($d["delPhp"]) && $d["delPhp"] == "on")
-    {
+    if (isset($d["delPhp"]) && $d["delPhp"] == "on") {
         unlink("unzip.php");
         $GLOBALS["m"] .= '<br><b>unzip.php</b> erfolgreich gel&ouml;scht!';
     }
 
 }
 
-function readZips()
-{
+function readZips() {
     $fileList = glob('*');
     $files = [];
-    foreach ($fileList as $filename)
-    {
+    foreach ($fileList as $filename) {
         $file = pathinfo($filename);
 
-        if (isset($file["extension"]) && $file["extension"] == "zip")
-        {
+        if (isset($file["extension"]) && $file["extension"] == "zip") {
             array_push($files, $filename);
         }
     }
@@ -70,8 +60,7 @@ function readZips()
     return $files;
 }
 
-function d($s)
-{
+function d($s) {
     echo "<pre>";
     print_r($s);
     echo "</pre>";
@@ -322,8 +311,7 @@ function d($s)
 </main>
 
 <script>
-    function load()
-    {
+    function load() {
         var el = document.getElementById("load");
         el.classList.remove("hidden");
     }
